@@ -1,6 +1,6 @@
 import axios from 'axios';
 import swAlert from '@sweetalert/with-react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, Navigate } from 'react-router-dom';
 
 function Login() {
 
@@ -23,7 +23,7 @@ function Login() {
             return;
         }
 
-        if(email !== "" && !regexEmail.test(email)) {
+        if (email !== "" && !regexEmail.test(email)) {
             swAlert(
                 <h1>
                     Debes escribir una direccion de correo electronico valida
@@ -32,13 +32,13 @@ function Login() {
             return;
         }
 
-        if(email !== "challenge@alkemy.org" || password !== "react") {
+        if (email !== "challenge@alkemy.org" || password !== "react") {
             swAlert(
                 <h1>
                     Credenciales inválidas!
                 </h1>
             );
-             return;
+            return;
         }
 
         axios.post('http://challenge-react.alkemy.org', { email, password }).then(res => {
@@ -49,24 +49,29 @@ function Login() {
         });
     }
 
+    let token = localStorage.getItem('token');
+
     return (
         <>
-            <h1>Formulario de contacto</h1>
-            <form onSubmit={submitHandler}>
-                <label>
-                    <span>Correo electrónico:</span><br />
-                    <input type="text" name="email" />
-                </label>
-                <br />
-                <label>
-                    <span>Contraseña:</span><br />
-                    <input type="password" name="password" />
-                </label>
-                <br />
-                <button type="submit">
-                    Ingresar
-                </button>
-            </form>
+            {token && <Navigate to='/listado' />}
+            <div className='row'>
+                <div className='col-6 offset-3'>
+                    <h2>Formulario de contacto</h2>
+                    <form onSubmit={submitHandler}>
+                        <label className='form-label d-block mt-2'>
+                            <span>Correo electrónico:</span><br />
+                            <input className='form-control' type="text" name="email" />
+                        </label>
+                        <label className='form-label d-block mt-2'>
+                            <span>Contraseña:</span><br />
+                            <input className='form-control' type="password" name="password" />
+                        </label>
+                        <button className='btn btn-succes mt-2' type="submit">
+                            Ingresar
+                        </button>
+                    </form>
+                </div>
+            </div>
         </>
     );
 }
